@@ -23,11 +23,11 @@ namespace Bleeding {
 
 				var tickms = config.SecondsBetweenTicks * 1000;
 
-				decimal tickDamage = 0;
-				if (b.DamageType == DamageTypes.Cut) tickDamage = b.InflictedDamage * config.PercentageBled * config.CutMultiplier;
-				if (b.DamageType == DamageTypes.Blunt) tickDamage = b.InflictedDamage * config.PercentageBled * config.BluntMultiplier;
-				if (b.DamageType == DamageTypes.Pierce) tickDamage = b.InflictedDamage * config.PercentageBled * config.PierceMultiplier;
-				if (b.DamageType == DamageTypes.Invalid) tickDamage = b.InflictedDamage * config.PercentageBled * config.InvalidMultiplier;
+				decimal tickDamage = b.InflictedDamage * config.PercentageBled;
+				if (b.DamageType == DamageTypes.Cut) tickDamage *= config.CutMultiplier;
+				if (b.DamageType == DamageTypes.Blunt) tickDamage *= config.BluntMultiplier;
+				if (b.DamageType == DamageTypes.Pierce) tickDamage *= config.PierceMultiplier;
+				if (b.DamageType == DamageTypes.Invalid) tickDamage *= config.InvalidMultiplier;
 
 				/* i can't believe i managet to make it work		 *
 				 * when the butterlord finally takes me, please tell *
