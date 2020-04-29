@@ -15,16 +15,16 @@
 	
 	<!--	how much should each damage type be multiplied by?
 				"invalid" means all attacks without specified damage type
-        usually used to instakill something, so i'd leave it at 0
+				usually used to instakill something, so i'd leave it at 0
 				default:
 				Cut: 1
 				Blunt: 0.3
 				Pierce: 1.5
-        Invalid: 0																												-->
+				Invalid: 0																												-->
 	<CutMultiplier>1</CutMultiplier>
 	<BluntMultiplier>0.3</BluntMultiplier>
 	<PierceMultiplier>1.5</PierceMultiplier>
-  <InvalidMultiplier>0</InvalidMultiplier>
+	<InvalidMultiplier>0</InvalidMultiplier>
 
 	<!--	how often should bleeding damage tick?
 				like MinimumDamage, don't set too low
