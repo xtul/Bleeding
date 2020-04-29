@@ -1,0 +1,38 @@
+﻿<Config>
+	<!--	the percentage of damage received that will turn into bleeding 
+				each second
+				default: 0.05 (tick = 5% damage received)			-->
+	<PercentageBled>0.05</PercentageBled>
+	
+	<!--	the minimum damage that will cause the agent to bleed
+				setting too low is not recommended
+				default: 25																												-->
+	<MinimumDamage>25</MinimumDamage>
+	
+	<!--	how many times should bleeding damage be dealt?
+				default: 5																												-->
+	<TickAmount>5</TickAmount>
+	
+	<!--	how much should each damage type be multiplied by?
+				"invalid" means all attacks without specified damage type
+        usually used to instakill something, so i'd leave it at 0
+				default:
+				Cut: 1
+				Blunt: 0.3
+				Pierce: 1.5
+        Invalid: 0																												-->
+	<CutMultiplier>1</CutMultiplier>
+	<BluntMultiplier>0.3</BluntMultiplier>
+	<PierceMultiplier>1.5</PierceMultiplier>
+  <InvalidMultiplier>0</InvalidMultiplier>
+
+	<!--	how often should bleeding damage tick?
+				like MinimumDamage, don't set too low
+				accepts two decimal places (like 0.01) 
+				default: 1																												-->
+	<SecondsBetweenTicks>1</SecondsBetweenTicks>
+	
+	<!--  toggles debug data in messagebox
+				default: false                                                    -->
+	<Debug>false</Debug>
+</Config>
