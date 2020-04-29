@@ -27,6 +27,7 @@ namespace Bleeding {
 
 			private async Task DealBleedingDamage() {
 				for (int tick = 0; tick < config.TickAmount; tick++) {
+					await Task.Delay(config.SecondsBetweenTicks * 1000);
 					if (victim.Health == 0)
 						return;
 
@@ -37,10 +38,10 @@ namespace Bleeding {
 						victim.Die(new Blow() {
 							OwnerId = attacker.Index,
 							NoIgnore = true,
+							BlowFlag = BlowFlags.ShrugOff,
 							DamageType = b.DamageType
 						});
 					}
-					await Task.Delay(config.SecondsBetweenTicks * 1000);
 				}
 				victim.RemoveComponent(this);
 			}

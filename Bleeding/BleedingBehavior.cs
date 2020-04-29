@@ -29,7 +29,7 @@ namespace Bleeding {
 				if (b.DamageType == DamageTypes.Pierce) tickDamage *= config.PierceMultiplier;
 				if (b.DamageType == DamageTypes.Invalid) tickDamage *= config.InvalidMultiplier;
 
-				/* i can't believe i managet to make it work		 *
+				/* i can't believe i managed to make it work		 *
 				 * when the butterlord finally takes me, please tell *
 				 * my family i suffered greatly						 */
 				victim.AddComponent(new BleedingComponent(victim, attacker, tickDamage, b, config));			
