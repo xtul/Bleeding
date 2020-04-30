@@ -28,10 +28,15 @@ namespace Bleeding {
 
 			private async Task DealBleedingDamage() {
 				decimal ticks = 1;
+				float oldSpeed = 0;
+				if (config.SlowOnBleed.Enabled) oldSpeed = victim.GetCurrentSpeedLimit();
 				while (true) {
 					tickDamage *= ticks;
 					ticks *= config.BleedRate;
+					if (config.SlowOnBleed.Enabled) victim.SetMaximumSpeedLimit(oldSpeed * config.SlowOnBleed.Value, false);
+
 					await Task.Delay(config.SecondsBetweenTicks * 1000);
+
 					if (victim.Health == 0)
 						return;
 					if (victim == Agent.Main) SayRed($"You suffered {tickDamage:N2} bleeding damage.");
@@ -52,6 +57,7 @@ namespace Bleeding {
 						break;
 					}
 				}
+				if (config.SlowOnBleed.Enabled) victim.SetMaximumSpeedLimit(oldSpeed, false);
 				victim.RemoveComponent(this);
 			}
 		}

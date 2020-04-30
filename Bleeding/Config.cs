@@ -21,7 +21,18 @@ namespace Bleeding {
 		public decimal PierceMultiplier { get; set; }
 		[XmlElement(ElementName = "InvalidMultiplier")]
 		public decimal InvalidMultiplier { get; set; }
+		[XmlElement(ElementName = "SlowOnBleed")]
+		public SlowOnBleed SlowOnBleed { get; set; }
 		[XmlElement(ElementName = "Debug")]
 		public bool Debug { get; set; }
+	}
+
+	[Serializable()]
+	[XmlRoot(ElementName = "SlowOnBleed")]
+	public class SlowOnBleed {
+		[XmlAttribute(AttributeName = "enabled")]
+		public bool Enabled { get; set; }
+		[XmlText]
+		public float Value { get; set; }
 	}
 }

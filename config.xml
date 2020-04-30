@@ -1,44 +1,49 @@
 ﻿<Config>
-	<!--	amount of damage that is the initial bleeding damage
-				default: 0.15 (15% damage received will turn into initial bleeding)	-->
-	<PercentageBled>0.15</PercentageBled>
-	
-	<!--	the minimum damage that will cause the agent to bleed
-				setting too low is not recommended
-				default: 25																													-->
-	<MinimumDamage>25</MinimumDamage>
-	
-	<!--	amount of bleeding damage from previous tick that 
-				carries over to next tick. 
-        formula is an exponentional function, 
-        bleeding damage is equal to y = (BleedRate)^x
-        http://easima.com/#!1/3_h/sH%40zsH%400YM4X9t/2j/YP9g309Kre0fQC7W9/YP9kk07MbOKePxdIvxuHV5sbu/tQ8E
-        basically 0 = single bleed damage, 1 = infinite bleeding
-				range from 0 to 1, anything else will be clamped
-        to these values
-				default: 0.3																												-->
-	<BleedRate>0.3</BleedRate>
-	
-	<!--	how much should each damage type be multiplied by?
-				"invalid" means all attacks without specified damage type
-				usually used to instakill something, so i'd leave it at -1
-				default:
-				Cut: 0.5 (150% more bleeding)
-				Blunt: 0.05 (105%)
-				Pierce: 0.3 (130%)
-				Invalid: -1 (0%)																									-->
-	<CutMultiplier>0.5</CutMultiplier>
-	<BluntMultiplier>0.02</BluntMultiplier>
-	<PierceMultiplier>0.3</PierceMultiplier>
-	<InvalidMultiplier>-1</InvalidMultiplier>
+  <!--	amount of damage that is the initial bleeding damage
+			default: 0.15 (15% damage received will turn into initial bleeding)														-->
+  <PercentageBled>0.15</PercentageBled>
 
-	<!--	how often should bleeding damage tick?
-				like MinimumDamage, don't set too low
-				accepts two decimal places (such as 0.01) 
-				default: 3																												-->
-	<SecondsBetweenTicks>3</SecondsBetweenTicks>
-	
-	<!--  toggles debug data in messagebox
-				default: false                                                    -->
-	<Debug>false</Debug>
+  <!--	the minimum damage that will cause the agent to bleed
+			setting too low is not recommended
+			default: 25																												-->
+  <MinimumDamage>25</MinimumDamage>
+
+  <!--	amount of bleeding damage from previous tick that 
+			carries over to next tick. 
+        	formula is an exponentional function, 
+        	bleeding damage is equal to y = (BleedRate)^x
+        	http://easima.com/#!1/3_h/sH%40zsH%400YM4X9t/2j/YP9g309Kre0fQC7W9/YP9kk07MbOKePxdIvxuHV5sbu/tQ8E
+        	basically 0 = single bleed damage, 1 = infinite bleeding
+			range from 0 to 1, anything else will be clamped
+        	to these values
+			default: 0.3																											-->
+  <BleedRate>0.3</BleedRate>
+
+  <!--	how much should each damage type be multiplied by?
+			"invalid" means all attacks without specified damage type
+			usually used to instakill something, so i'd leave it at -1
+			default:
+			Cut: 0.5 (150% more bleeding)
+			Blunt: 0.05 (105%)
+			Pierce: 0.3 (130%)
+			Invalid: -1 (0%)																										-->
+  <CutMultiplier>0.5</CutMultiplier>
+  <BluntMultiplier>0.02</BluntMultiplier>
+  <PierceMultiplier>0.3</PierceMultiplier>
+  <InvalidMultiplier>-1</InvalidMultiplier>
+
+  <!--	how often should bleeding damage tick?
+			like MinimumDamage, don't set too low
+			accepts two decimal places (such as 0.01) 
+			default: 3																												-->
+  <SecondsBetweenTicks>3</SecondsBetweenTicks>
+
+  <!--		how high % speed is the character slowed down to
+			0 means immobile, 1 means not slowed
+        	default: false, 0.8																										-->
+  <SlowOnBleed enabled="false">0.8</SlowOnBleed>
+
+  <!--	toggles debug data in messagebox
+			default: false                                                   														-->
+  <Debug>false</Debug>
 </Config>
