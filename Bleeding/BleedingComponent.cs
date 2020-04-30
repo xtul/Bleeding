@@ -39,7 +39,11 @@ namespace Bleeding {
 
 					if (victim.Health == 0)
 						return;
-					if (victim == Agent.Main) SayRed($"You suffered {tickDamage:N2} bleeding damage.");
+
+					if (config.DisplayPlayerEffects) {
+						if (victim == Agent.Main) SayRed($"You suffered {tickDamage:N2} bleeding damage.");
+						if (attacker == Agent.Main) SayPink($"Your attacks caused {tickDamage:N2} bleeding damage.");
+					}
 
 					victim.Health -= (float)tickDamage;
 					if (config.Debug) Say($"{victim.Name} took {tickDamage} tick damage. {victim.Health}/{victim.HealthLimit}");

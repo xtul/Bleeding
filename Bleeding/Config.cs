@@ -23,6 +23,8 @@ namespace Bleeding {
 		public decimal InvalidMultiplier { get; set; }
 		[XmlElement(ElementName = "SlowOnBleed")]
 		public SlowOnBleed SlowOnBleed { get; set; }
+		[XmlElement(ElementName = "DisplayPlayerEffects")]
+		public bool DisplayPlayerEffects { get; set; }
 		[XmlElement(ElementName = "Debug")]
 		public bool Debug { get; set; }
 	}

@@ -1,11 +1,11 @@
 ﻿<Config>
   <!--	amount of damage that is the initial bleeding damage
-			default: 0.15 (15% damage received will turn into initial bleeding)														-->
-  <PercentageBled>0.15</PercentageBled>
+			default: 0.2 (20% damage received will turn into initial bleeding)  -->
+  <PercentageBled>0.2</PercentageBled>
 
   <!--	the minimum damage that will cause the agent to bleed
 			setting too low is not recommended
-			default: 25																												-->
+			default: 25 -->
   <MinimumDamage>25</MinimumDamage>
 
   <!--	amount of bleeding damage from previous tick that 
@@ -16,8 +16,8 @@
         	basically 0 = single bleed damage, 1 = infinite bleeding
 			range from 0 to 1, anything else will be clamped
         	to these values
-			default: 0.3																											-->
-  <BleedRate>0.3</BleedRate>
+			default: 0.3  -->
+  <BleedRate>0.425</BleedRate>
 
   <!--	how much should each damage type be multiplied by?
 			"invalid" means all attacks without specified damage type
@@ -26,7 +26,7 @@
 			Cut: 0.5 (150% more bleeding)
 			Blunt: 0.05 (105%)
 			Pierce: 0.3 (130%)
-			Invalid: -1 (0%)																										-->
+			Invalid: -1 (0%)  -->
   <CutMultiplier>0.5</CutMultiplier>
   <BluntMultiplier>0.02</BluntMultiplier>
   <PierceMultiplier>0.3</PierceMultiplier>
@@ -35,15 +35,20 @@
   <!--	how often should bleeding damage tick?
 			like MinimumDamage, don't set too low
 			accepts two decimal places (such as 0.01) 
-			default: 3																												-->
+			default: 3  -->
   <SecondsBetweenTicks>3</SecondsBetweenTicks>
 
   <!--		how high % speed is the character slowed down to
 			0 means immobile, 1 means not slowed
-        	default: false, 0.8																										-->
+        	default: false, 0.8 -->
   <SlowOnBleed enabled="false">0.8</SlowOnBleed>
 
+  <!--  determines whether or not it should display 
+        effects on player and caused by player
+        default: true -->
+  <DisplayPlayerEffects>true</DisplayPlayerEffects>
+  
   <!--	toggles debug data in messagebox
-			default: false                                                   														-->
+			default: false  -->
   <Debug>false</Debug>
 </Config>
