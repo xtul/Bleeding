@@ -12,5 +12,9 @@ namespace Bleeding {
 		public static void Say(string text) {
 			InformationManager.DisplayMessage(new InformationMessage(text, new Color(134, 114, 250)));
 		}
+
+		public static void SayRed(string text) {
+			InformationManager.DisplayMessage(new InformationMessage(text, new Color(1, 0, 0)));
+		}
 	}
 }

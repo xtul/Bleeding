@@ -18,6 +18,9 @@ namespace Bleeding {
 			config = (Config)serializer.Deserialize(reader);
 			reader.Close();
 
+			if (config.BleedRate < 0) config.BleedRate = 0;
+			if (config.BleedRate > 1) config.BleedRate = 1;
+
 			if (config.Debug) Say($"Bleeding mod activated.");
 
 			mission.AddMissionBehaviour(new BleedingBehavior(config));

@@ -9,8 +9,8 @@ namespace Bleeding {
 		public decimal PercentageBled { get; set; }
 		[XmlElement(ElementName = "MinimumDamage")]
 		public float MinimumDamage { get; set; }
-		[XmlElement(ElementName = "TickAmount")]
-		public int TickAmount { get; set; }
+		[XmlElement(ElementName = "BleedRate")]
+		public decimal BleedRate { get; set; }
 		[XmlElement(ElementName = "SecondsBetweenTicks")]
 		public int SecondsBetweenTicks { get; set; }
 		[XmlElement(ElementName = "CutMultiplier")]

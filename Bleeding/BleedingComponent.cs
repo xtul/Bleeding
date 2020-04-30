@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using TaleWorlds.MountAndBlade;
 using static Bleeding.Helpers;
 
@@ -7,16 +8,16 @@ namespace Bleeding {
 		private class BleedingComponent : AgentComponent {
 			private readonly Agent victim;
 			private readonly Agent attacker;
-			private readonly decimal tickDamage;
 			private readonly Blow b;
 			private readonly Config config;
+			private decimal tickDamage;
 
 			public BleedingComponent(Agent victim, Agent attacker, decimal tickDamage, Blow b, Config config) : base(victim) {
 				this.victim = victim;
 				this.attacker = attacker;
-				this.tickDamage = tickDamage;
 				this.b = b;
 				this.config = config;
+				this.tickDamage = tickDamage;
 				Initialize();
 			}
 
@@ -26,21 +27,29 @@ namespace Bleeding {
 			}
 
 			private async Task DealBleedingDamage() {
-				for (int tick = 0; tick < config.TickAmount; tick++) {
+				decimal ticks = 1;
+				while (true) {
+					tickDamage *= ticks;
+					ticks *= config.BleedRate;
 					await Task.Delay(config.SecondsBetweenTicks * 1000);
 					if (victim.Health == 0)
 						return;
+					if (victim == Agent.Main) SayRed($"You suffered {tickDamage:N2} bleeding damage.");
 
-					if (config.Debug) Say($"{victim.Name} took {tickDamage} tick damage. {victim.Health}/{victim.HealthLimit}");
 					victim.Health -= (float)tickDamage;
+					if (config.Debug) Say($"{victim.Name} took {tickDamage} tick damage. {victim.Health}/{victim.HealthLimit}");
 
 					if (victim.Health <= 0) {
 						victim.Die(new Blow() {
 							OwnerId = attacker.Index,
 							NoIgnore = true,
-							BlowFlag = BlowFlags.ShrugOff,
+							BlowFlag = BlowFlags.NoSound,
 							DamageType = b.DamageType
 						});
+						break;
+					}
+					if (tickDamage < (decimal)0.1) {
+						break;
 					}
 				}
 				victim.RemoveComponent(this);

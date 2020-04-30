@@ -24,15 +24,14 @@ namespace Bleeding {
 				var tickms = config.SecondsBetweenTicks * 1000;
 
 				decimal tickDamage = b.InflictedDamage * config.PercentageBled;
-				if (b.DamageType == DamageTypes.Cut) tickDamage *= config.CutMultiplier;
-				if (b.DamageType == DamageTypes.Blunt) tickDamage *= config.BluntMultiplier;
-				if (b.DamageType == DamageTypes.Pierce) tickDamage *= config.PierceMultiplier;
-				if (b.DamageType == DamageTypes.Invalid) tickDamage *= config.InvalidMultiplier;
+				if (b.DamageType == DamageTypes.Cut) tickDamage *= 1+config.CutMultiplier;
+				if (b.DamageType == DamageTypes.Blunt) tickDamage *= 1+config.BluntMultiplier;
+				if (b.DamageType == DamageTypes.Pierce) tickDamage *= 1+config.PierceMultiplier;
+				if (b.DamageType == DamageTypes.Invalid) tickDamage *= 1+config.InvalidMultiplier;
 
-				/* i can't believe i managed to make it work		 *
-				 * when the butterlord finally takes me, please tell *
-				 * my family i suffered greatly						 */
-				victim.AddComponent(new BleedingComponent(victim, attacker, tickDamage, b, config));			
+				if (victim == Agent.Main) SayRed("Last hit caused bleeding.");
+				if (tickDamage != 0) 
+					victim.AddComponent(new BleedingComponent(victim, attacker, tickDamage, b, config));			
 
 			} catch (Exception ex) { if (config.Debug) Say(ex.Message + "\n" + ex.StackTrace); }
 			base.OnRegisterBlow(attacker, victim, realHitEntity, b, ref collisionData);
