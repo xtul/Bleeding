@@ -18,17 +18,6 @@ namespace Bleeding {
 
 		public override MissionBehaviourType BehaviourType => MissionBehaviourType.Other;
 
-		//public override void OnAgentRemoved(Agent affectedAgent, Agent affectorAgent, AgentState agentState, KillingBlow blow) {
-		//	var bleeding = affectedAgent.GetComponent<BleedingComponent>();
-		//	if (bleeding != null) {
-		//		bleeding.bandaged = true; // lol
-		//		affectedAgent.RemoveComponent(bleeding);
-		//	}
-		//	var bandage = affectedAgent.GetComponent<BandageBehavior.BandageComponent>();
-		//	if (bandage != null) affectedAgent.RemoveComponent(bandage);
-		//	base.OnAgentRemoved(affectedAgent, affectorAgent, agentState, blow);
-		//}
-
 		public override void OnRegisterBlow(Agent attacker, Agent victim, GameEntity realHitEntity, Blow b, ref AttackCollisionData collisionData) {
 			if (victim == null) return;
 			if (attacker == null) return;
