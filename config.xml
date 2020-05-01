@@ -24,7 +24,7 @@
 			usually used to instakill something, so i'd leave it at -1
 			default:
 			Cut: 0.5 (150% more bleeding)
-			Blunt: 0.05 (105%)
+			Blunt: 0.02 (102%)
 			Pierce: 0.3 (130%)
 			Invalid: -1 (0%)  -->
   <CutMultiplier>0.5</CutMultiplier>

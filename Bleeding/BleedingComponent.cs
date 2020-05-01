@@ -27,41 +27,50 @@ namespace Bleeding {
 			}
 
 			private async Task DealBleedingDamage() {
-				decimal ticks = 1;
-				float oldSpeed = 0;
-				if (config.SlowOnBleed.Enabled) oldSpeed = victim.GetCurrentSpeedLimit();
-				while (true) {
-					tickDamage *= ticks;
-					ticks *= config.BleedRate;
-					if (config.SlowOnBleed.Enabled) victim.SetMaximumSpeedLimit(oldSpeed * config.SlowOnBleed.Value, false);
+				try {
+					decimal ticks = 1;
+					float oldSpeed = 0;
+					if (config.SlowOnBleed.Enabled)
+						oldSpeed = victim.GetCurrentSpeedLimit();
+					while (true) {
+						if (tickDamage < (decimal)0.1) {
+							break;
+						}
 
-					await Task.Delay(config.SecondsBetweenTicks * 1000);
+						tickDamage *= ticks;
+						ticks *= config.BleedRate;
+						if (config.SlowOnBleed.Enabled)
+							victim.SetMaximumSpeedLimit(oldSpeed * config.SlowOnBleed.Value, false);
 
-					if (victim.Health == 0)
-						return;
+						await Task.Delay(config.SecondsBetweenTicks * 1000);
 
-					if (config.DisplayPlayerEffects) {
-						if (victim == Agent.Main) SayRed($"You suffered {tickDamage:N2} bleeding damage.");
-						if (attacker == Agent.Main) SayPink($"Your attacks caused {tickDamage:N2} bleeding damage.");
+						if (victim.Health == 0)
+							return;
+
+						if (config.DisplayPlayerEffects) {
+							if (victim == Agent.Main)
+								SayRed($"You suffered {tickDamage:N2} bleeding damage.");
+							if (attacker == Agent.Main)
+								SayPink($"Your attacks caused {tickDamage:N2} bleeding damage.");
+						}
+
+						victim.Health -= (float)tickDamage;
+						if (config.Debug)
+							Say($"{victim.Name} took {tickDamage} tick damage. {victim.Health}/{victim.HealthLimit}");
+
+						if (victim.Health <= 0) {
+							victim.Die(new Blow() {
+								OwnerId = attacker.Index,
+								NoIgnore = true,
+								BlowFlag = BlowFlags.NoSound,
+								DamageType = b.DamageType
+							});
+							break;
+						}
 					}
-
-					victim.Health -= (float)tickDamage;
-					if (config.Debug) Say($"{victim.Name} took {tickDamage} tick damage. {victim.Health}/{victim.HealthLimit}");
-
-					if (victim.Health <= 0) {
-						victim.Die(new Blow() {
-							OwnerId = attacker.Index,
-							NoIgnore = true,
-							BlowFlag = BlowFlags.NoSound,
-							DamageType = b.DamageType
-						});
-						break;
-					}
-					if (tickDamage < (decimal)0.1) {
-						break;
-					}
-				}
-				if (config.SlowOnBleed.Enabled) victim.SetMaximumSpeedLimit(oldSpeed, false);
+					if (config.SlowOnBleed.Enabled)
+						victim.SetMaximumSpeedLimit(oldSpeed, false);
+				} catch (Exception ex) { if (config.Debug) Say(ex.Message); }
 				victim.RemoveComponent(this);
 			}
 		}
