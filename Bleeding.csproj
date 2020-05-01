@@ -256,8 +256,10 @@
     <!-- TODO: Don't think this can be made optional -->
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bleeding\BleedingComponent.cs" />
-    <Compile Include="Bleeding\BleedingBehavior.cs" />
+    <Compile Include="Bleeding\Components\BandageComponent.cs" />
+    <Compile Include="Bleeding\Behaviors\BandageBehavior.cs" />
+    <Compile Include="Bleeding\Components\BleedingComponent.cs" />
+    <Compile Include="Bleeding\Behaviors\BleedingBehavior.cs" />
     <Compile Include="Bleeding\BleedingSubModule.cs" />
     <Compile Include="Bleeding\Config.cs" />
     <Compile Include="Bleeding\Helpers.cs" />

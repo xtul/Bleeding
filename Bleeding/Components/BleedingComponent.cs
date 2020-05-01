@@ -1,23 +1,28 @@
 ﻿using System;
 using System.Threading.Tasks;
+using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 using static Bleeding.Helpers;
 
 namespace Bleeding {
 	internal partial class BleedingBehavior {
-		private class BleedingComponent : AgentComponent {
+		public class BleedingComponent : AgentComponent {
 			private readonly Agent victim;
 			private readonly Agent attacker;
 			private readonly Blow b;
 			private readonly Config config;
+			private readonly Mission mission;
 			private decimal tickDamage;
+			public bool bandaged;
 
-			public BleedingComponent(Agent victim, Agent attacker, decimal tickDamage, Blow b, Config config) : base(victim) {
+			public BleedingComponent(Agent victim, Agent attacker, decimal tickDamage, Blow b, Config config, Mission mission) : base(victim) {
 				this.victim = victim;
 				this.attacker = attacker;
 				this.b = b;
 				this.config = config;
+				this.mission = mission;
 				this.tickDamage = tickDamage;
+				this.bandaged = false;
 				Initialize();
 			}
 
@@ -33,7 +38,14 @@ namespace Bleeding {
 					if (config.SlowOnBleed.Enabled)
 						oldSpeed = victim.GetCurrentSpeedLimit();
 					while (true) {
-						if (tickDamage < (decimal)0.1) {
+						if (mission.Mode == MissionMode.Conversation) { 
+							if (config.Debug) Announce("Cancelled bleeding due to conversation.");
+							break;
+						}
+						if (bandaged) {
+							break;
+						}
+						if (tickDamage < (decimal)0.1 || ticks == 0) {
 							break;
 						}
 
@@ -51,7 +63,7 @@ namespace Bleeding {
 							if (victim == Agent.Main)
 								SayRed($"You suffered {tickDamage:N2} bleeding damage.");
 							if (attacker == Agent.Main)
-								SayPink($"Your attacks caused {tickDamage:N2} bleeding damage.");
+								SayPink($"Your attacks caused {tickDamage:N2} bleeding damage @{b.VictimBodyPart}.");
 						}
 
 						victim.Health -= (float)tickDamage;
@@ -62,8 +74,9 @@ namespace Bleeding {
 							victim.Die(new Blow() {
 								OwnerId = attacker.Index,
 								NoIgnore = true,
-								BlowFlag = BlowFlags.NoSound,
-								DamageType = b.DamageType
+								BaseMagnitude = 0,
+								VictimBodyPart = b.VictimBodyPart,
+								DamageType = DamageTypes.Blunt
 							});
 							break;
 						}
