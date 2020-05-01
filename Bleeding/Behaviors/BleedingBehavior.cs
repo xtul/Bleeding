@@ -30,6 +30,7 @@ namespace Bleeding {
 				decimal tickDamage = b.InflictedDamage * config.PercentageBled;
 
 				tickDamage = tickDamage.ApplyMultipliers(b, collisionData, config);
+				if (config.ReducedForNPCs.Enabled && !victim.IsHero) tickDamage *= config.ReducedForNPCs.Value;
 
 				if (tickDamage != 0) {
 					if (victim == Agent.Main) SayRed("You started bleeding.");

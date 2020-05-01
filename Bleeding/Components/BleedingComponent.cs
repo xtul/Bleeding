@@ -48,13 +48,13 @@ namespace Bleeding {
 						if (tickDamage < (decimal)0.1 || ticks == 0) {
 							break;
 						}
+						await Task.Delay(config.SecondsBetweenTicks * 1000);
 
 						tickDamage *= ticks;
 						ticks *= config.BleedRate;
 						if (config.SlowOnBleed.Enabled)
 							victim.SetMaximumSpeedLimit(oldSpeed * config.SlowOnBleed.Value, false);
 
-						await Task.Delay(config.SecondsBetweenTicks * 1000);
 
 						if (victim.Health == 0)
 							return;

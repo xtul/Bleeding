@@ -77,8 +77,6 @@ namespace Bleeding {
 			if (collisionData.VictimHitBodyPart == BoneBodyPartType.ShoulderLeft || collisionData.VictimHitBodyPart == BoneBodyPartType.ShoulderRight)
 				tickDamage *= 1 + config.BodyMultipliers.Shoulders.Mult;
 
-			if (config.ReducedForNPCs.Enabled) tickDamage *= config.ReducedForNPCs.Value;
-
 			return tickDamage;
 		}
 	}
