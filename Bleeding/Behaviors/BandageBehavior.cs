@@ -12,19 +12,20 @@ namespace Bleeding {
 
 		public int count;
 		private readonly Config config;
+		private readonly Mission mission;
 
-		public BandageBehavior(Config config) {
+		public BandageBehavior(Config config, Mission mission) {
 			count = config.Bandages.PlayerCount;
 			this.config = config;
+			this.mission = mission;
 		}
 		public override void OnAgentCreated(Agent agent) {
 			if (agent == null) return;
 			if (agent.Character == null) return;
-			if (agent.IsPlayerControlled) return;
 
 			if (agent != null && agent.IsHero) {
-				SayGreen($"{agent.Name} received a bandage.");
-				agent.AddComponent(new BandageComponent(agent, config));
+				SayGreen($"{agent.Name} received bandages.");
+				agent.AddComponent(new BandageComponent(agent, config, mission));
 			}
 			base.OnAgentCreated(agent);
 		}

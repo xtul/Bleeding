@@ -1,7 +1,7 @@
 ﻿<Module>
   <Name value="Bleeding"/>
   <Id value="Bleeding"/>
-  <Version value="v1.0.6"/>
+  <Version value="v1.0.7"/>
   <SingleplayerModule value="true"/>
   <MultiplayerModule value="false"/>
   <DependedModules>

@@ -1,4 +1,7 @@
-﻿using System;
+﻿using SandBox.View.Menu;
+using System;
+using System.Runtime.ExceptionServices;
+using System.Security;
 using System.Threading.Tasks;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
@@ -31,6 +34,12 @@ namespace Bleeding {
 				await DealBleedingDamage();
 			}
 
+			protected override void OnStopUsingGameObject() {
+				base.OnStopUsingGameObject();
+				Say("lol");
+			}
+
+			[HandleProcessCorruptedStateExceptions]
 			private async Task DealBleedingDamage() {
 				try {
 					decimal ticks = 1;
@@ -38,17 +47,20 @@ namespace Bleeding {
 					if (config.SlowOnBleed.Enabled)
 						oldSpeed = victim.GetCurrentSpeedLimit();
 					while (true) {
+						if (!bandaged) await Task.Delay(config.SecondsBetweenTicks * 1000);
 						if (mission.Mode == MissionMode.Conversation) { 
-							if (config.Debug) Announce("Cancelled bleeding due to conversation.");
 							break;
 						}
 						if (bandaged) {
 							break;
 						}
-						if (tickDamage < (decimal)0.1 || ticks == 0) {
+						if (tickDamage < 1) {
 							break;
 						}
-						await Task.Delay(config.SecondsBetweenTicks * 1000);
+						// don't process further if victim died due to other means
+						if ((victim.State == AgentState.Killed || victim.State == AgentState.Deleted) || victim.Health == 0) {
+							break;
+						}
 
 						tickDamage *= ticks;
 						ticks *= config.BleedRate;
@@ -56,32 +68,35 @@ namespace Bleeding {
 							victim.SetMaximumSpeedLimit(oldSpeed * config.SlowOnBleed.Value, false);
 
 
-						if (victim.Health == 0)
-							return;
-
 						if (config.DisplayPlayerEffects) {
 							if (victim == Agent.Main)
-								SayRed($"You suffered {tickDamage:N2} bleeding damage.");
+								SayDarkRed($"You suffered {tickDamage:N2} bleeding damage.");
 							if (attacker == Agent.Main)
-								SayPink($"Your attacks caused {tickDamage:N2} bleeding damage @{b.VictimBodyPart}.");
+								SayLightRed($"Your attacks caused {tickDamage:N2} bleeding damage @{b.VictimBodyPart}.");
 						}
 
 						victim.Health -= (float)tickDamage;
 						if (config.Debug)
 							Say($"{victim.Name} took {tickDamage} tick damage. {victim.Health}/{victim.HealthLimit}");
 
-						if (victim.Health <= 0) {
-							victim.Die(new Blow() {
+						// finish off the target. otherwise health will reach negative numbers and victim will still live
+						// IMPORTANT NOTE EOEOEOEOE DONT SKIP
+						// checking if mission is ended is very fucking important because doing anything with 
+						// agents after mission is closed will fuck everything up (also known as access violation exception)
+						if (!mission.MissionEnded() && victim.Health <= 0) {
+							Say($"{victim.Name} should die");
+							victim.Die(new Blow {
 								OwnerId = attacker.Index,
 								NoIgnore = true,
 								BaseMagnitude = 0,
 								VictimBodyPart = b.VictimBodyPart,
 								DamageType = DamageTypes.Blunt
 							});
+							victim.RemoveComponent(this);
 							break;
 						}
 					}
-					if (config.SlowOnBleed.Enabled)
+					if (!mission.MissionEnded() && config.SlowOnBleed.Enabled)
 						victim.SetMaximumSpeedLimit(oldSpeed, false);
 				} catch (Exception ex) { if (config.Debug) Say(ex.Message); }
 				victim.RemoveComponent(this);

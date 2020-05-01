@@ -1,12 +1,12 @@
 ﻿<Config>
-  <!--	amount of damage that is the initial bleeding damage
-			default: 0.1 (10% damage received will turn into initial bleeding)  -->
-  <PercentageBled>0.1</PercentageBled>
+  <!--	amount of damage that is converted to initial bleeding
+			default: 0.15 (15% damage received will turn into initial bleeding)  -->
+  <PercentageBled>0.15</PercentageBled>
 
   <!--	the minimum damage that will cause the agent to bleed
 			setting too low is not recommended
-			default: 25 -->
-  <MinimumDamage>25</MinimumDamage>
+			default: 20 -->
+  <MinimumDamage>20</MinimumDamage>
 
   <!--	amount of bleeding damage from previous tick that 
 			carries over to next tick. 
@@ -46,7 +46,7 @@
   <!--  by how high % will NPC (excluding heroes) bleeding
         be reduced by?
         default: enabled, 0.5 (only 50% bleeding for standard troops)  -->
-  <ReducedForNPCs enabled="true">0.5</ReducedForNPCs>
+  <ReducedForNPCs enabled="false">0.5</ReducedForNPCs>
   
   <!--  determines whether bleeding is disabled for player
         default: false  -->
@@ -79,5 +79,5 @@
   
   <!--	toggles debug data in messagebox
 			default: false  -->
-  <Debug>true</Debug>
+  <Debug>false</Debug>
 </Config>

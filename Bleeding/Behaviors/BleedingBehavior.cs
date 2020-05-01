@@ -18,6 +18,17 @@ namespace Bleeding {
 
 		public override MissionBehaviourType BehaviourType => MissionBehaviourType.Other;
 
+		//public override void OnAgentRemoved(Agent affectedAgent, Agent affectorAgent, AgentState agentState, KillingBlow blow) {
+		//	var bleeding = affectedAgent.GetComponent<BleedingComponent>();
+		//	if (bleeding != null) {
+		//		bleeding.bandaged = true; // lol
+		//		affectedAgent.RemoveComponent(bleeding);
+		//	}
+		//	var bandage = affectedAgent.GetComponent<BandageBehavior.BandageComponent>();
+		//	if (bandage != null) affectedAgent.RemoveComponent(bandage);
+		//	base.OnAgentRemoved(affectedAgent, affectorAgent, agentState, blow);
+		//}
+
 		public override void OnRegisterBlow(Agent attacker, Agent victim, GameEntity realHitEntity, Blow b, ref AttackCollisionData collisionData) {
 			if (victim == null) return;
 			if (attacker == null) return;
@@ -33,7 +44,7 @@ namespace Bleeding {
 				if (config.ReducedForNPCs.Enabled && !victim.IsHero) tickDamage *= config.ReducedForNPCs.Value;
 
 				if (tickDamage != 0) {
-					if (victim == Agent.Main) SayRed("You started bleeding.");
+					if (victim == Agent.Main) SayDarkRed("You started bleeding.");
 					victim.AddComponent(new BleedingComponent(victim, attacker, tickDamage, b, config, mission));
 				}
 

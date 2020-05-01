@@ -11,18 +11,18 @@ using TaleWorlds.MountAndBlade;
 namespace Bleeding {
 	public static class Helpers {
 		public static void Say(string text) {
-			InformationManager.DisplayMessage(new InformationMessage(text, new Color(134, 114, 250)));
+			InformationManager.DisplayMessage(new InformationMessage(text, new Color(0.5f, 0.5f, 0.5f)));
 		}
 
 		public static void Announce(string text) {
 			InformationManager.AddQuickInformation(new TaleWorlds.Localization.TextObject(text));
 		}
 
-		public static void SayRed(string text) {
+		public static void SayDarkRed(string text) {
 			InformationManager.DisplayMessage(new InformationMessage(text, new Color((float)0.8, 0, 0)));
 		}
 
-		public static void SayPink(string text) {
+		public static void SayLightRed(string text) {
 			InformationManager.DisplayMessage(new InformationMessage(text, new Color(1, 0, 0)));
 		}
 
