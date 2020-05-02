@@ -4,6 +4,7 @@ using System.Runtime.ExceptionServices;
 using System.Security;
 using System.Threading.Tasks;
 using TaleWorlds.Core;
+using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using static Bleeding.Helpers;
 
@@ -15,7 +16,7 @@ namespace Bleeding {
 			private readonly Blow b;
 			private readonly Config config;
 			private readonly Mission mission;
-			private decimal tickDamage;
+			public decimal tickDamage;
 			public bool bandaged;
 
 			public BleedingComponent(Agent victim, Agent attacker, decimal tickDamage, Blow b, Config config, Mission mission) : base(victim) {
@@ -37,7 +38,7 @@ namespace Bleeding {
 			[HandleProcessCorruptedStateExceptions]
 			private async Task DealBleedingDamage() {
 				try {
-					decimal ticks = 0.6m;
+					decimal ticks = 0.8m;
 					float oldSpeed = 0;
 
 					// slow the agent for the duration of bleeding
@@ -61,7 +62,6 @@ namespace Bleeding {
 						// drop off the damage based on time passed and set bleed rate
 						tickDamage *= ticks;
 						ticks *= config.BleedRate;
-
 
 						// finally, reduce health
 						victim.Health -= (float)tickDamage;

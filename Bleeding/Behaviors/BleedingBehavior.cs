@@ -35,8 +35,14 @@ namespace Bleeding {
 				tickDamage = tickDamage.ApplyMultipliers(b, collisionData, config);
 				if (config.ReducedForNPCs.Enabled && victim != null && !victim.IsHero) tickDamage *= config.ReducedForNPCs.Value;
 
+				var bleeding = victim.GetComponent<BleedingComponent>();
+
 				if (tickDamage != 0) {
-					if (victim == Agent.Main) SayDarkRed("You started bleeding.");
+					if (bleeding != null) {
+						bleeding.tickDamage += tickDamage * 0.3m;
+						if (victim == Agent.Main) SayDarkRed("Your bleeding got worse!");
+					}
+					if (victim == Agent.Main && bleeding == null) SayDarkRed("You started bleeding.");
 					victim.AddComponent(new BleedingComponent(victim, attacker, tickDamage, b, config, mission));
 				}
 

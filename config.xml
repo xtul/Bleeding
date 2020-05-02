@@ -1,12 +1,12 @@
 ﻿<Config>
   <!--	amount of damage that is converted to initial bleeding
-			default: 0.15 (15% damage received will turn into initial bleeding)  -->
-  <PercentageBled>0.15</PercentageBled>
+			default: 0.12 (12% damage received will turn into initial bleeding)  -->
+  <PercentageBled>0.12</PercentageBled>
 
   <!--	the minimum damage that will cause the agent to bleed
 			setting too low is not recommended
-			default: 20 -->
-  <MinimumDamage>20</MinimumDamage>
+			default: 25 -->
+  <MinimumDamage>25</MinimumDamage>
 
   <!--	amount of bleeding damage from previous tick that 
 			carries over to next tick. 
@@ -16,20 +16,20 @@
         	basically 0 = single bleed damage, 1 = infinite bleeding
 			range from 0 to 1, anything else will be clamped
         	to these values
-			default: 0.55  -->
-  <BleedRate>0.55</BleedRate>
+			default: 0.8  -->
+  <BleedRate>0.95</BleedRate>
 
   <!--	how much should each damage type be multiplied by?
 			"invalid" means all attacks without specified damage type
 			usually used to instakill something, so i'd leave it at -1
 			default:
-			Cut: 0.5 (150% of bleeding)
+			Cut: 1.0 (200% of bleeding)
 			Blunt: -0.8 (20%)
-			Pierce: 0.3 (130%)
+			Pierce: 0.6 (160%)
 			Invalid: -1 (0%)  -->
-  <CutMultiplier>0.5</CutMultiplier>
+  <CutMultiplier>1.0</CutMultiplier>
   <BluntMultiplier>-0.8</BluntMultiplier>
-  <PierceMultiplier>0.3</PierceMultiplier>
+  <PierceMultiplier>0.6</PierceMultiplier>
   <InvalidMultiplier>-1</InvalidMultiplier>
 
   <!--	how often should bleeding damage tick?

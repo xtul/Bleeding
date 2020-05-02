@@ -32,32 +32,34 @@ namespace Bleeding {
 
 		public override async void OnMissionTick(float dt) {
 			if (Input.IsKeyReleased((InputKey)config.Bandages.KeyCode)) {
-				var player = Agent.Main;
-				var medicine = player.Character?.GetSkillValue(DefaultSkills.Medicine) ?? 0;
-				var applicationTime = 2000 - medicine * 2;
-				var bleeding = player.GetComponent<BleedingBehavior.BleedingComponent>();
-				if (count < 1) {
-					SayGreen("You have no bandages left.");
-					return;
-				} else {
-					SayGreen("You started bandaging.");
-					var oldspeed = player.GetCurrentSpeedLimit();
-					player.SetMaximumSpeedLimit(oldspeed * 0.1f, false);
-					await Task.Delay(TimeSpan.FromMilliseconds(applicationTime));
-					player.SetMaximumSpeedLimit(oldspeed, true);
-					count--;
-					if (bleeding != null) {
-						bleeding.bandaged = true;
-						SayGreen("Your bandage successfully stopped the bleeding.");
+				try {
+					var player = Agent.Main;
+					var medicine = player.Character?.GetSkillValue(DefaultSkills.Medicine) ?? 0;
+					var applicationTime = 2000 - medicine * 2;
+					var bleeding = player.GetComponent<BleedingBehavior.BleedingComponent>();
+					if (count < 1) {
+						SayGreen("You have no bandages left.");
+						return;
+					} else {
+						SayGreen("You started bandaging.");
+						var oldspeed = player.GetCurrentSpeedLimit();
+						player.SetMaximumSpeedLimit(oldspeed * 0.1f, false);
+						await Task.Delay(TimeSpan.FromMilliseconds(applicationTime));
+						player.SetMaximumSpeedLimit(oldspeed, true);
+						count--;
+						if (bleeding != null) {
+							bleeding.bandaged = true;
+							SayGreen("Your bandage successfully stopped the bleeding.");
+						}
+						if (medicine > config.Bandages.MinimumMedicine) {
+							var formula = (medicine - config.Bandages.MinimumMedicine) * 0.15f;
+							player.Health += formula;
+							player.Health.Clamp(0, player.HealthLimit);
+							SayGreen($"You healed {formula} damage.");
+						}
+						SayGreen($"You have {count} bandages left.");
 					}
-					if (medicine > config.Bandages.MinimumMedicine) {
-						var formula = (medicine - config.Bandages.MinimumMedicine) * 0.15f;
-						player.Health += formula;
-						player.Health.Clamp(0, player.HealthLimit);
-						SayGreen($"You healed {formula} damage.");
-					}
-					SayGreen($"You have {count} bandages left.");
-				}
+				} catch { }
 				//Agent.Main.AddComponent(new BandageComponent(Agent.Main));
 			}
 		}
