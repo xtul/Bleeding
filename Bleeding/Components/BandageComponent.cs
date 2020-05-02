@@ -28,11 +28,11 @@ namespace Bleeding {
 					canBandage = false;
 					Announce("{=used_bandage}{AGENT} used bandage.".Replace("{AGENT}", agent.Name));
 					var oldspeed = agent.GetCurrentSpeedLimit();
-					agent.SetMaximumSpeedLimit(oldspeed * 0.3f, false);
+					if (!mission.MissionEnded()) agent.SetMaximumSpeedLimit(oldspeed * 0.3f, false);
 					await Task.Delay(3000);
-					agent.SetMaximumSpeedLimit(oldspeed, true);
+					if (!mission.MissionEnded()) agent.SetMaximumSpeedLimit(oldspeed, true);
 					count--;
-					bleeding.bandaged = true;
+					if (!mission.MissionEnded()) bleeding.bandaged = true;
 				}
 				await Task.Delay(3000); // cooldown
 				canBandage = true;

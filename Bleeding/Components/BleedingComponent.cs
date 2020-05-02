@@ -92,7 +92,6 @@ namespace Bleeding {
 								VictimBodyPart = b.VictimBodyPart,
 								DamageType = DamageTypes.Blunt
 							});
-							victim.RemoveComponent(this);
 							break;
 						}
 					}

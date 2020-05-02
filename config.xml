@@ -1,7 +1,7 @@
 ﻿<Config>
   <!--	amount of damage that is converted to initial bleeding
-			default: 0.12 (12% damage received will turn into initial bleeding)  -->
-  <PercentageBled>0.12</PercentageBled>
+			default: 0.15 (15% damage received will turn into initial bleeding)  -->
+  <PercentageBled>0.15</PercentageBled>
 
   <!--	the minimum damage that will cause the agent to bleed
 			setting too low is not recommended
@@ -41,33 +41,35 @@
   <!--		how high % speed is the character slowed down to
 			0 means immobile, 1 means not slowed
         	default: false, 0.75 -->
-  <SlowOnBleed enabled="true">0.75</SlowOnBleed>
+  <SlowOnBleed enabled="false">0.75</SlowOnBleed>
 
   <!--  by how high % will NPC (excluding heroes) bleeding
         be reduced by?
-        default: enabled, 0.5 (only 50% bleeding for standard troops)  -->
-  <ReducedForNPCs enabled="true">0.5</ReducedForNPCs>
-  
+        default: enabled, 0.75 (only 75% bleeding for standard troops)  -->
+  <ReducedForNPCs enabled="true">0.75</ReducedForNPCs>
+
   <!--  determines whether bleeding is disabled for player
         default: false  -->
   <DisabledForPlayer>false</DisabledForPlayer>
-  
+
   <!--  determines whether or not it should display 
         effects on player and caused by player
         default: true -->
   <DisplayPlayerEffects>true</DisplayPlayerEffects>
 
   <BodyMultipliers>
-    <Head mult="1.2"/> <!-- 220% bleeding -->
-    <Neck mult="0.75"/> <!-- 175% -->
-    <Arms mult="-0.6"/> <!-- 40% -->
-    <Shoulders mult="-0.1"/> <!-- 90% -->
+    <Head mult="1.2"/>  <!-- 220% bleeding -->
+    <Neck mult="0.75"/>  <!-- 175% -->
+    <Arms mult="-0.6"/>  <!-- 40% -->
+    <Shoulders mult="-0.1"/>  <!-- 90% -->
     <Legs mult="0.15"/> <!-- 115% -->
   </BodyMultipliers>
 
   <Bandages enabled="true">
-    <PlayerCount>3</PlayerCount> <!-- how many bandages does player have? -->
-    <NpcCount>1</NpcCount> <!-- how many bandages does NPC have? -->
+    <PlayerCount>3</PlayerCount>
+    <!-- how many bandages does player have? -->
+    <NpcCount>1</NpcCount>
+    <!-- how many bandages does NPC have? -->
     <!--  a minimum medicine skill that will not only stop bleeding, but also heal the player
           the formula is medicine - MinimumMedicine * 0.15, meaning that a very skilled medic 
           would be able to heal a third of his health -->
@@ -76,7 +78,7 @@
          full code list: https://pastebin.com/v5Vz84ys -->
     <KeyCode>35</KeyCode>
   </Bandages>
-  
+
   <!--	toggles debug data in messagebox
 			default: false  -->
   <Debug>false</Debug>
