@@ -40,6 +40,7 @@ namespace Bleeding {
 				try {
 					decimal ticks = 0.8m;
 					float oldSpeed = 0;
+					var victimEnemyOnInit = victim.IsEnemyOf(Agent.Main);
 
 					// slow the agent for the duration of bleeding
 					if (config.SlowOnBleed.Enabled) { 
@@ -58,6 +59,8 @@ namespace Bleeding {
 						|| victim.Health == 0) {
 							break;
 						}
+						// if enemy/friend status change since the bleeding started, cancel bleeding
+						if (victimEnemyOnInit && victim.IsFriendOf(Agent.Main)) break;
 
 						// drop off the damage based on time passed and set bleed rate
 						tickDamage *= ticks;
