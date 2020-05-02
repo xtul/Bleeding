@@ -46,7 +46,7 @@
   <!--  by how high % will NPC (excluding heroes) bleeding
         be reduced by?
         default: enabled, 0.5 (only 50% bleeding for standard troops)  -->
-  <ReducedForNPCs enabled="false">0.5</ReducedForNPCs>
+  <ReducedForNPCs enabled="true">0.5</ReducedForNPCs>
   
   <!--  determines whether bleeding is disabled for player
         default: false  -->

@@ -34,49 +34,46 @@ namespace Bleeding {
 				await DealBleedingDamage();
 			}
 
-			protected override void OnStopUsingGameObject() {
-				base.OnStopUsingGameObject();
-				Say("lol");
-			}
-
 			[HandleProcessCorruptedStateExceptions]
 			private async Task DealBleedingDamage() {
 				try {
 					decimal ticks = 1;
 					float oldSpeed = 0;
-					if (config.SlowOnBleed.Enabled)
+
+					// slow the agent for the duration of bleeding
+					if (config.SlowOnBleed.Enabled) { 
 						oldSpeed = victim.GetCurrentSpeedLimit();
+						victim.SetMaximumSpeedLimit(oldSpeed * config.SlowOnBleed.Value, false);					
+					}
+
 					while (true) {
-						if (!bandaged) await Task.Delay(config.SecondsBetweenTicks * 1000);
-						if (mission.Mode == MissionMode.Conversation) { 
-							break;
-						}
-						if (bandaged) {
-							break;
-						}
-						if (tickDamage < 1) {
-							break;
-						}
+						await Task.Delay(config.SecondsBetweenTicks * 1000);
+						if (mission.Mode == MissionMode.Conversation) break;
+						if (bandaged) break;
+						if (tickDamage < 1) break;
 						// don't process further if victim died due to other means
-						if ((victim.State == AgentState.Killed || victim.State == AgentState.Deleted) || victim.Health == 0) {
+						if (victim.State == AgentState.Killed 
+						|| victim.State == AgentState.Deleted 
+						|| victim.Health == 0) {
 							break;
 						}
 
+						// drop off the damage based on time passed and set bleed rate
 						tickDamage *= ticks;
 						ticks *= config.BleedRate;
-						if (config.SlowOnBleed.Enabled)
-							victim.SetMaximumSpeedLimit(oldSpeed * config.SlowOnBleed.Value, false);
 
 
+						// finally, reduce health
+						victim.Health -= (float)tickDamage;
+
+						// display player related bleedings
 						if (config.DisplayPlayerEffects) {
 							if (victim == Agent.Main)
 								SayDarkRed($"You suffered {tickDamage:N2} bleeding damage.");
 							if (attacker == Agent.Main)
-								SayLightRed($"Your attacks caused {tickDamage:N2} bleeding damage @{b.VictimBodyPart}.");
+								SayLightRed($"Your attacks caused {tickDamage:N2} bleeding damage.");
 						}
-
-						victim.Health -= (float)tickDamage;
-						if (config.Debug)
+						if (config.Debug && !mission.MissionEnded())
 							Say($"{victim.Name} took {tickDamage} tick damage. {victim.Health}/{victim.HealthLimit}");
 
 						// finish off the target. otherwise health will reach negative numbers and victim will still live
@@ -96,10 +93,14 @@ namespace Bleeding {
 							break;
 						}
 					}
+
+					// restore old speed
 					if (!mission.MissionEnded() && config.SlowOnBleed.Enabled)
 						victim.SetMaximumSpeedLimit(oldSpeed, false);
+				
+				// this is probably bad practice but it's better than crashing out of nowhere...
 				} catch (Exception ex) { if (config.Debug) Say(ex.Message); }
-				victim.RemoveComponent(this);
+				if (!mission.MissionEnded()) victim.RemoveComponent(this);
 			}
 		}
 	}

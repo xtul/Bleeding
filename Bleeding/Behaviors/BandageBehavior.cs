@@ -33,8 +33,7 @@ namespace Bleeding {
 		public override async void OnMissionTick(float dt) {
 			if (Input.IsKeyReleased((InputKey)config.Bandages.KeyCode)) {
 				var player = Agent.Main;
-				var medicine = player.Character?.GetSkillValue(DefaultSkills.Medicine);
-				if (medicine == null) medicine = 0;
+				var medicine = player.Character?.GetSkillValue(DefaultSkills.Medicine) ?? 0;
 				var applicationTime = 2000 - medicine * 2;
 				var bleeding = player.GetComponent<BleedingBehavior.BleedingComponent>();
 				if (count < 1) {
@@ -52,7 +51,7 @@ namespace Bleeding {
 						SayGreen("Your bandage successfully stopped the bleeding.");
 					}
 					if (medicine > config.Bandages.MinimumMedicine) {
-						var formula = ((int)medicine - config.Bandages.MinimumMedicine) * 0.15f;
+						var formula = (medicine - config.Bandages.MinimumMedicine) * 0.15f;
 						player.Health += formula;
 						player.Health.Clamp(0, player.HealthLimit);
 						SayGreen($"You healed {formula} damage.");
