@@ -24,7 +24,7 @@ namespace Bleeding {
 			if (agent.Character == null) return;
 
 			if (agent != null && agent.IsHero) {
-				SayGreen($"{agent.Name} received bandages.");
+				SayGreen("{=received_bandage}{AGENT} received a bandage.".Replace("{AGENT}", agent.Name));
 				agent.AddComponent(new BandageComponent(agent, config, mission));
 			}
 			base.OnAgentCreated(agent);
@@ -38,10 +38,10 @@ namespace Bleeding {
 					var applicationTime = 2000 - medicine * 2;
 					var bleeding = player.GetComponent<BleedingBehavior.BleedingComponent>();
 					if (count < 1) {
-						SayGreen("You have no bandages left.");
+						SayGreen("{=no_bandages}You have no bandages.");
 						return;
 					} else {
-						SayGreen("You started bandaging.");
+						SayGreen("{=started_bandaging}You started bandaging.");
 						var oldspeed = player.GetCurrentSpeedLimit();
 						player.SetMaximumSpeedLimit(oldspeed * 0.1f, false);
 						await Task.Delay(TimeSpan.FromMilliseconds(applicationTime));
@@ -49,18 +49,17 @@ namespace Bleeding {
 						count--;
 						if (bleeding != null) {
 							bleeding.bandaged = true;
-							SayGreen("Your bandage successfully stopped the bleeding.");
+							SayGreen("{=bandaging_success}Your bandage successfully stopped the bleeding.");
 						}
 						if (medicine > config.Bandages.MinimumMedicine) {
 							var formula = (medicine - config.Bandages.MinimumMedicine) * 0.15f;
 							player.Health += formula;
 							player.Health.Clamp(0, player.HealthLimit);
-							SayGreen($"You healed {formula} damage.");
+							SayGreen("{=bandaging_healed}You healed {DAMAGE} damage.".Replace("{DAMAGE}", formula.ToString()));
 						}
-						SayGreen($"You have {count} bandages left.");
+						SayGreen("{=bandages_left}You have {COUNT} bandages left.".Replace("{COUNT}", count.ToString()));
 					}
-				} catch { }
-				//Agent.Main.AddComponent(new BandageComponent(Agent.Main));
+				} catch (Exception ex) { if (config.Debug) Say(ex.Message); }
 			}
 		}
 	}

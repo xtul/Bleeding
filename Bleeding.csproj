@@ -267,6 +267,9 @@
     <None Include="config.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Content Include="ModuleData\Languages\EN\module_strings.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Readme.txt" />
     <Content Include="SubModule.xml" />
   </ItemGroup>
@@ -274,7 +277,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <PropertyGroup>
-    <PostBuildEvent>xcopy /d /y "$(MSBuildProjectDirectory)\SubModule.xml" "C:\Steam\SteamLibrary\steamapps\common\Mount &amp; Blade II Bannerlord\Modules\Bleeding"</PostBuildEvent>
+    <PostBuildEvent>xcopy /d /y "$(MSBuildProjectDirectory)\SubModule.xml" "C:\Steam\SteamLibrary\steamapps\common\Mount &amp; Blade II Bannerlord\Modules\Bleeding"
+mkdir "C:\Steam\SteamLibrary\steamapps\common\Mount &amp; Blade II Bannerlord\Modules\Bleeding\ModuleData"
+xcopy /d /e /y "C:\Steam\SteamLibrary\steamapps\common\Mount &amp; Blade II Bannerlord\Modules\Bleeding\bin\Win64_Shipping_Client\ModuleData" "C:\Steam\SteamLibrary\steamapps\common\Mount &amp; Blade II Bannerlord\Modules\Bleeding\ModuleData"</PostBuildEvent>
   </PropertyGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

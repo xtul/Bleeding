@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<base xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" type="string">
+  <tags>
+    <tag language="English" />
+  </tags>
+  <strings>
+    <string id="bleeding_started" text="You started bleeding." />
+    <string id="bleeding_worsened" text="Your bleeding got worse!" />
+    <string id="bleeding_damage" text="You took {DAMAGE} bleeding damage." />
+    <string id="bleeding_dealt" text="Your attacks caused {DAMAGE} bleeding damage." />
+    <string id="used_bandage" text="{AGENT} used bandage." />
+    <string id="received_bandage" text="{AGENT} received a bandage." />
+    <string id="no_bandages" text="You have no bandages." />
+    <string id="started_bandaging" text="You started bandaging." />
+    <string id="bandaging_success" text="Your bandage successfully stopped the bleeding." />
+    <string id="bandaging_healed" text="You healed {DAMAGE} damage." />
+    <string id="bandages_left" text="You have {COUNT} bandages left." />
+  </strings>
+</base>

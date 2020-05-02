@@ -40,9 +40,9 @@ namespace Bleeding {
 				if (tickDamage != 0) {
 					if (bleeding != null) {
 						bleeding.tickDamage += tickDamage * 0.3m;
-						if (victim == Agent.Main) SayDarkRed("Your bleeding got worse!");
+						if (victim == Agent.Main) SayDarkRed("{=bleeding_worsened}Your bleeding got worse!");
 					}
-					if (victim == Agent.Main && bleeding == null) SayDarkRed("You started bleeding.");
+					if (victim == Agent.Main && bleeding == null) SayDarkRed("{=bleeding_started}You started bleeding.");
 					victim.AddComponent(new BleedingComponent(victim, attacker, tickDamage, b, config, mission));
 				}
 

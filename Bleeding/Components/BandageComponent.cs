@@ -26,7 +26,7 @@ namespace Bleeding {
 				var bleeding = agent.GetComponent<BleedingBehavior.BleedingComponent>();
 				if (!mission.MissionEnded() && bleeding != null && !bleeding.bandaged && count > 0 && canBandage && agent.Health < agent.HealthLimit / 2) {
 					canBandage = false;
-					Announce($"{agent.Name} used a bandage.");
+					Announce("{=used_bandage}{AGENT} used bandage.".Replace("{AGENT}", agent.Name));
 					var oldspeed = agent.GetCurrentSpeedLimit();
 					agent.SetMaximumSpeedLimit(oldspeed * 0.3f, false);
 					await Task.Delay(3000);

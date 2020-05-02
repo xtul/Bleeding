@@ -6,28 +6,29 @@ using System.Threading;
 using System.Threading.Tasks;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
+using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
 
 namespace Bleeding {
 	public static class Helpers {
 		public static void Say(string text) {
-			InformationManager.DisplayMessage(new InformationMessage(text, new Color(0.5f, 0.5f, 0.5f)));
+			InformationManager.DisplayMessage(new InformationMessage(new TextObject(text, null).ToString(), new Color(0.5f, 0.5f, 0.5f)));
 		}
 
 		public static void Announce(string text) {
-			InformationManager.AddQuickInformation(new TaleWorlds.Localization.TextObject(text));
+			InformationManager.AddQuickInformation(new TextObject(text));
 		}
 
 		public static void SayDarkRed(string text) {
-			InformationManager.DisplayMessage(new InformationMessage(text, new Color((float)0.8, 0, 0)));
+			InformationManager.DisplayMessage(new InformationMessage(new TextObject(text, null).ToString(), new Color((float)0.8, 0, 0)));
 		}
 
 		public static void SayLightRed(string text) {
-			InformationManager.DisplayMessage(new InformationMessage(text, new Color(1, 0, 0)));
+			InformationManager.DisplayMessage(new InformationMessage(new TextObject(text, null).ToString(), new Color(1, 0, 0)));
 		}
 
 		public static void SayGreen(string text) {
-			InformationManager.DisplayMessage(new InformationMessage(text, new Color(0, 1, 0)));
+			InformationManager.DisplayMessage(new InformationMessage(new TextObject(text, null).ToString(), new Color(0, 1, 0)));
 		}
 
 		// https://stackoverflow.com/a/2683487/
