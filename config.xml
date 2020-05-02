@@ -17,7 +17,7 @@
 			range from 0 to 1, anything else will be clamped
         	to these values
 			default: 0.8  -->
-  <BleedRate>0.95</BleedRate>
+  <BleedRate>0.8</BleedRate>
 
   <!--	how much should each damage type be multiplied by?
 			"invalid" means all attacks without specified damage type
