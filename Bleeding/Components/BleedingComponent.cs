@@ -37,7 +37,7 @@ namespace Bleeding {
 			[HandleProcessCorruptedStateExceptions]
 			private async Task DealBleedingDamage() {
 				try {
-					decimal ticks = 1;
+					decimal ticks = 0.6m;
 					float oldSpeed = 0;
 
 					// slow the agent for the duration of bleeding
@@ -50,7 +50,7 @@ namespace Bleeding {
 						await Task.Delay(config.SecondsBetweenTicks * 1000);
 						if (mission.Mode == MissionMode.Conversation) break;
 						if (bandaged) break;
-						if (tickDamage < 1) break;
+						if (tickDamage < 1m) break;
 						// don't process further if victim died due to other means
 						if (victim.State == AgentState.Killed 
 						|| victim.State == AgentState.Deleted 

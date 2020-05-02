@@ -40,8 +40,8 @@
 
   <!--		how high % speed is the character slowed down to
 			0 means immobile, 1 means not slowed
-        	default: false, 0.8 -->
-  <SlowOnBleed enabled="false">0.8</SlowOnBleed>
+        	default: false, 0.75 -->
+  <SlowOnBleed enabled="true">0.75</SlowOnBleed>
 
   <!--  by how high % will NPC (excluding heroes) bleeding
         be reduced by?

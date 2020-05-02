@@ -43,7 +43,7 @@ namespace Bleeding {
 					SayGreen("You started bandaging.");
 					var oldspeed = player.GetCurrentSpeedLimit();
 					player.SetMaximumSpeedLimit(oldspeed * 0.1f, false);
-					await Task.Delay(TimeSpan.FromMilliseconds((int)applicationTime));
+					await Task.Delay(TimeSpan.FromMilliseconds(applicationTime));
 					player.SetMaximumSpeedLimit(oldspeed, true);
 					count--;
 					if (bleeding != null) {

@@ -19,18 +19,21 @@ namespace Bleeding {
 		public override MissionBehaviourType BehaviourType => MissionBehaviourType.Other;
 
 		public override void OnRegisterBlow(Agent attacker, Agent victim, GameEntity realHitEntity, Blow b, ref AttackCollisionData collisionData) {
+			// filter out unwanted blows
 			if (victim == null) return;
 			if (attacker == null) return;
-			if (mission.Mode == MissionMode.Conversation) return;
+			// don't you love it when you talk to your spouse on the field and she faints and dies after a while
+			if (mission.Mode == MissionMode.Conversation) return; 
 			if (config.DisabledForPlayer && victim == Agent.Main) return;
+			if (collisionData.AttackBlockedWithShield) return;
+			if (b.InflictedDamage < config.MinimumDamage) return;
+
 			try {
-				if (collisionData.AttackBlockedWithShield) return;
-				if (b.InflictedDamage < config.MinimumDamage) return;
 
 				decimal tickDamage = b.InflictedDamage * config.PercentageBled;
 
 				tickDamage = tickDamage.ApplyMultipliers(b, collisionData, config);
-				if (config.ReducedForNPCs.Enabled && !victim.IsHero) tickDamage *= config.ReducedForNPCs.Value;
+				if (config.ReducedForNPCs.Enabled && victim != null && !victim.IsHero) tickDamage *= config.ReducedForNPCs.Value;
 
 				if (tickDamage != 0) {
 					if (victim == Agent.Main) SayDarkRed("You started bleeding.");
