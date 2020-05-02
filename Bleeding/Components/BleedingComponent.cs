@@ -84,7 +84,7 @@ namespace Bleeding {
 						// checking if mission is ended is very fucking important because doing anything with 
 						// agents after mission is closed will fuck everything up (also known as access violation exception)
 						if (!mission.MissionEnded() && victim.Health <= 0) {
-							Say($"{victim.Name} should die");
+							if (config.Debug) Say($"{victim.Name} should die");
 							victim.Die(new Blow {
 								OwnerId = attacker.Index,
 								NoIgnore = true,

@@ -23,7 +23,7 @@ namespace Bleeding {
 
 			if (config.Debug) Say($"Bleeding mod activated.");
 
-			mission.AddMissionBehaviour(new BandageBehavior(config, mission));
+			if (config.Bandages.Enabled) mission.AddMissionBehaviour(new BandageBehavior(config, mission));
 			mission.AddMissionBehaviour(new BleedingBehavior(config, mission));
 			base.OnMissionBehaviourInitialize(mission);
 		}

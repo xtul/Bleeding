@@ -65,7 +65,7 @@
     <Legs mult="0.15"/> <!-- 115% -->
   </BodyMultipliers>
 
-  <Bandages>
+  <Bandages enabled="true">
     <PlayerCount>3</PlayerCount> <!-- how many bandages does player have? -->
     <NpcCount>1</NpcCount> <!-- how many bandages does NPC have? -->
     <!--  a minimum medicine skill that will not only stop bleeding, but also heal the player

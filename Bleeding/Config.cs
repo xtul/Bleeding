@@ -37,7 +37,7 @@ namespace Bleeding {
 		public bool Debug { get; set; }
 	}
 
-	[XmlRoot(ElementName = "Bandages")]
+	[XmlRoot(ElementName = "ReducedForNPCs")]
 	public class ReducedForNPCs {
 		[XmlAttribute(AttributeName = "enabled")]
 		public bool Enabled { get; set; }
@@ -47,6 +47,8 @@ namespace Bleeding {
 
 	[XmlRoot(ElementName = "Bandages")]
 	public class Bandages {
+		[XmlAttribute(AttributeName = "enabled")]
+		public bool Enabled { get; set; }
 		[XmlElement(ElementName = "PlayerCount")]
 		public int PlayerCount { get; set; }
 		[XmlElement(ElementName = "NpcCount")]
