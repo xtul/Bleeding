@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.PerformanceData;
+﻿using System;
+using System.Diagnostics.PerformanceData;
 using System.Linq;
 using System.Threading.Tasks;
 using TaleWorlds.MountAndBlade;
@@ -23,16 +24,23 @@ namespace Bleeding {
 
 			protected override async void OnTickAsAI(float dt) {
 				base.OnTickAsAI(dt);
+				if (canBandage) await DoBandaging();
+			}
+
+			private async Task DoBandaging() {
 				var bleeding = agent.GetComponent<BleedingBehavior.BleedingComponent>();
-				if (!mission.MissionEnded() && bleeding != null && !bleeding.bandaged && count > 0 && canBandage && agent.Health < agent.HealthLimit / 2) {
+				if (!mission.MissionEnded() && bleeding != null && !bleeding.bandaged && count > 0 && bleeding.tickDamage > 5) {
 					canBandage = false;
 					Announce("{=used_bandage}{AGENT} used bandage.".Replace("{AGENT}", agent.Name));
-					var oldspeed = agent.GetCurrentSpeedLimit();
-					if (!mission.MissionEnded()) agent.SetMaximumSpeedLimit(oldspeed * 0.3f, false);
-					await Task.Delay(3000);
-					if (!mission.MissionEnded()) agent.SetMaximumSpeedLimit(oldspeed, true);
 					count--;
-					if (!mission.MissionEnded()) bleeding.bandaged = true;
+					if (!mission.MissionEnded())
+						bleeding.bandaged = true;
+					var oldspeed = agent.GetCurrentSpeedLimit();
+					if (!mission.MissionEnded())
+						agent.SetMaximumSpeedLimit(oldspeed * 0.3f, false);
+					await Task.Delay(3000);
+					if (!mission.MissionEnded())
+						agent.SetMaximumSpeedLimit(oldspeed, true);
 				}
 				await Task.Delay(3000); // cooldown
 				canBandage = true;

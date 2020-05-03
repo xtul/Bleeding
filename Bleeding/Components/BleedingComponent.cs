@@ -66,8 +66,17 @@ namespace Bleeding {
 						tickDamage *= ticks;
 						ticks *= config.BleedRate;
 
-						// finally, reduce health
-						victim.Health -= (float)tickDamage;
+						// finally, take damage
+						if (!mission.MissionEnded()) {
+							victim.RegisterBlow(new Blow { 
+								InflictedDamage = (int)tickDamage,
+								OwnerId = attacker.Index,
+								NoIgnore = true,
+								BaseMagnitude = 0,
+								VictimBodyPart = b.VictimBodyPart,
+								DamageType = DamageTypes.Blunt,
+							});
+						}
 
 						// display player related bleedings
 						if (config.DisplayPlayerEffects) {
@@ -78,22 +87,6 @@ namespace Bleeding {
 						}
 						if (config.Debug && !mission.MissionEnded())
 							Say($"{victim.Name} took {tickDamage} tick damage. {victim.Health}/{victim.HealthLimit}");
-
-						// finish off the target. otherwise health will reach negative numbers and victim will still live
-						// IMPORTANT NOTE EOEOEOEOE DONT SKIP
-						// checking if mission is ended is very fucking important because doing anything with 
-						// agents after mission is closed will fuck everything up (also known as access violation exception)
-						if (!mission.MissionEnded() && victim.Health <= 0) {
-							if (config.Debug) Say($"{victim.Name} should die");
-							victim.Die(new Blow {
-								OwnerId = attacker.Index,
-								NoIgnore = true,
-								BaseMagnitude = 0,
-								VictimBodyPart = b.VictimBodyPart,
-								DamageType = DamageTypes.Blunt
-							});
-							break;
-						}
 					}
 
 					// restore old speed
