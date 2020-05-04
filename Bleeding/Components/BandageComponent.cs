@@ -29,7 +29,7 @@ namespace Bleeding {
 
 			private async Task DoBandaging() {
 				var bleeding = agent.GetComponent<BleedingBehavior.BleedingComponent>();
-				if (!mission.MissionEnded() && bleeding != null && !bleeding.bandaged && count > 0 && bleeding.tickDamage > 5) {
+				if (!mission.MissionEnded() && bleeding != null && !bleeding.bandaged && count > 0 && bleeding.tickDamage > 9) {
 					canBandage = false;
 					Announce("{=used_bandage}{AGENT} used bandage.".Replace("{AGENT}", agent.Name));
 					count--;

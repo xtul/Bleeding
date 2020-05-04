@@ -23,6 +23,8 @@ namespace Bleeding {
 		public decimal InvalidMultiplier { get; set; }
 		[XmlElement(ElementName = "SlowOnBleed")]
 		public SlowOnBleed SlowOnBleed { get; set; }
+		[XmlElement(ElementName = "StaggerOnTick")]
+		public StaggerOnTick StaggerOnTick { get; set; }
 		[XmlElement(ElementName = "ReducedForNPCs")]
 		public ReducedForNPCs ReducedForNPCs { get; set; }
 		[XmlElement(ElementName = "DisabledForPlayer")]
@@ -57,6 +59,15 @@ namespace Bleeding {
 		public int MinimumMedicine { get; set; }
 		[XmlElement(ElementName = "KeyCode")]
 		public int KeyCode { get; set; }
+	}
+
+	[Serializable()]
+	[XmlRoot(ElementName = "StaggerOnTick")]
+	public class StaggerOnTick {
+		[XmlAttribute(AttributeName = "enabled")]
+		public bool Enabled { get; set; }
+		[XmlText]
+		public decimal Value { get; set; }
 	}
 
 	[Serializable()]

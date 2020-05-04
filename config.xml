@@ -43,6 +43,12 @@
         	default: false, 0.75 -->
   <SlowOnBleed enabled="false">0.75</SlowOnBleed>
 
+  
+  <!--  if enabled, each bleeding tick will stagger the victim (as if it was hit by invisible enemy)
+        provided value defines how much damage a tick needs do to apply stagger effect 
+        default: true, 15-->
+  <StaggerOnTick enabled="true">15</StaggerOnTick>
+
   <!--  by how high % will NPC (excluding heroes) bleeding
         be reduced by?
         default: enabled, 0.75 (only 75% bleeding for standard troops)  -->

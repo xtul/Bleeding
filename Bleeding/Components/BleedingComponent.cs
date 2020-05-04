@@ -68,11 +68,23 @@ namespace Bleeding {
 
 						// finally, take damage
 						if (!mission.MissionEnded()) {
-							victim.RegisterBlow(new Blow { 
-								InflictedDamage = (int)tickDamage,
+							if (config.StaggerOnTick.Enabled && !mission.MissionEnded() && tickDamage >= config.StaggerOnTick.Value) {
+								victim.RegisterBlow(new Blow {
+									InflictedDamage = (int)tickDamage,
+									OwnerId = attacker.Index,
+									NoIgnore = true,
+									BaseMagnitude = 0,
+									VictimBodyPart = b.VictimBodyPart,
+									DamageType = DamageTypes.Blunt,
+								});
+							} else victim.Health -= (float)tickDamage;
+						}
+						
+						// finish off the target if necessary
+						if (!mission.MissionEnded() && victim.Health <= 0) {
+							victim.RegisterBlow(new Blow {
+								InflictedDamage = 1,
 								OwnerId = attacker.Index,
-								NoIgnore = true,
-								BaseMagnitude = 0,
 								VictimBodyPart = b.VictimBodyPart,
 								DamageType = DamageTypes.Blunt,
 							});
