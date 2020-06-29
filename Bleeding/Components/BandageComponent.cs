@@ -22,27 +22,20 @@ namespace Bleeding {
 				canBandage = true;
 			}
 
-			protected override async void OnTickAsAI(float dt) {
-				base.OnTickAsAI(dt);
-				if (canBandage) await DoBandaging();
+			protected override void OnTickAsAI(float dt) {
+				if (canBandage) DoBandaging();
 			}
 
-			private async Task DoBandaging() {
+			private void DoBandaging() {
 				var bleeding = agent.GetComponent<BleedingBehavior.BleedingComponent>();
-				if (!mission.MissionEnded() && bleeding != null && !bleeding.bandaged && count > 0 && bleeding.tickDamage > 9) {
+				if (mission != null && bleeding != null && !bleeding._bandaged && count > 0 && bleeding._tickDamage * 3 > agent.Health) {
 					canBandage = false;
-					Announce("{=used_bandage}{AGENT} used bandage.".Replace("{AGENT}", agent.Name));
+					Announce($"{agent.Name} used {(agent.IsFemale ? "her" : "his")} bandage.");
 					count--;
+					agent.SetActionChannel(1, ActionIndexCache.Create("act_reload_crossbow"), true);
 					if (!mission.MissionEnded())
-						bleeding.bandaged = true;
-					var oldspeed = agent.GetCurrentSpeedLimit();
-					if (!mission.MissionEnded())
-						agent.SetMaximumSpeedLimit(oldspeed * 0.3f, false);
-					await Task.Delay(3000);
-					if (!mission.MissionEnded())
-						agent.SetMaximumSpeedLimit(oldspeed, true);
+						bleeding._bandaged = true;
 				}
-				await Task.Delay(3000); // cooldown
 				canBandage = true;
 			}
 		}

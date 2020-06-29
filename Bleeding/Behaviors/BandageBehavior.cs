@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using TaleWorlds.Core;
 using TaleWorlds.InputSystem;
@@ -35,20 +34,19 @@ namespace Bleeding {
 				try {
 					var player = Agent.Main;
 					var medicine = player.Character?.GetSkillValue(DefaultSkills.Medicine) ?? 0;
-					var applicationTime = 2000 - medicine * 2;
 					var bleeding = player.GetComponent<BleedingBehavior.BleedingComponent>();
 					if (count < 1) {
 						SayGreen("{=no_bandages}You have no bandages.");
 						return;
 					} else {
 						SayGreen("{=started_bandaging}You started bandaging.");
-						var oldspeed = player.GetCurrentSpeedLimit();
-						player.SetMaximumSpeedLimit(oldspeed * 0.1f, false);
-						await Task.Delay(TimeSpan.FromMilliseconds(applicationTime));
-						player.SetMaximumSpeedLimit(oldspeed, true);
+						player.SetMaximumSpeedLimit(0.4f, true);
+						await Task.Delay(2000 - (medicine * 2));
+						player.SetMaximumSpeedLimit(1f, true);
+						if (Mission.Current == null) return;
 						count--;
 						if (bleeding != null) {
-							bleeding.bandaged = true;
+							bleeding._bandaged = true;
 							SayGreen("{=bandaging_success}Your bandage successfully stopped the bleeding.");
 						}
 						if (medicine > config.Bandages.MinimumMedicine) {

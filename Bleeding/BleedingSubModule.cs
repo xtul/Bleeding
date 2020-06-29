@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using TaleWorlds.MountAndBlade;
-using System.Linq;
-using System.Text;
+﻿using TaleWorlds.MountAndBlade;
 using System.Xml.Serialization;
 using System.IO;
 using TaleWorlds.Library;
 using static Bleeding.Helpers;
-using TaleWorlds.Core;
 
 namespace Bleeding {
 	public class BleedingSubModule : MBSubModuleBase {

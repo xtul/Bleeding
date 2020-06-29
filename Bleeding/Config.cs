@@ -6,21 +6,21 @@ namespace Bleeding {
 	[XmlRoot(ElementName = "Config")]
 	public class Config {
 		[XmlElement(ElementName = "PercentageBled")]
-		public decimal PercentageBled { get; set; }
+		public double PercentageBled { get; set; }
 		[XmlElement(ElementName = "MinimumDamage")]
 		public float MinimumDamage { get; set; }
 		[XmlElement(ElementName = "BleedRate")]
-		public decimal BleedRate { get; set; }
+		public double BleedRate { get; set; }
 		[XmlElement(ElementName = "SecondsBetweenTicks")]
 		public int SecondsBetweenTicks { get; set; }
 		[XmlElement(ElementName = "CutMultiplier")]
-		public decimal CutMultiplier { get; set; }
+		public double CutMultiplier { get; set; }
 		[XmlElement(ElementName = "BluntMultiplier")]
-		public decimal BluntMultiplier { get; set; }
+		public double BluntMultiplier { get; set; }
 		[XmlElement(ElementName = "PierceMultiplier")]
-		public decimal PierceMultiplier { get; set; }
+		public double PierceMultiplier { get; set; }
 		[XmlElement(ElementName = "InvalidMultiplier")]
-		public decimal InvalidMultiplier { get; set; }
+		public double InvalidMultiplier { get; set; }
 		[XmlElement(ElementName = "SlowOnBleed")]
 		public SlowOnBleed SlowOnBleed { get; set; }
 		[XmlElement(ElementName = "StaggerOnTick")]
@@ -44,7 +44,7 @@ namespace Bleeding {
 		[XmlAttribute(AttributeName = "enabled")]
 		public bool Enabled { get; set; }
 		[XmlText]
-		public decimal Value { get; set; }
+		public double Value { get; set; }
 	}
 
 	[XmlRoot(ElementName = "Bandages")]
@@ -67,7 +67,7 @@ namespace Bleeding {
 		[XmlAttribute(AttributeName = "enabled")]
 		public bool Enabled { get; set; }
 		[XmlText]
-		public decimal Value { get; set; }
+		public double Value { get; set; }
 	}
 
 	[Serializable()]
@@ -98,34 +98,34 @@ namespace Bleeding {
 	[XmlRoot(ElementName = "Head")]
 	public class Head {
 		[XmlAttribute(AttributeName = "mult")]
-		public decimal Mult { get; set; }
+		public double Mult { get; set; }
 	}
 
 	[Serializable()]
 	[XmlRoot(ElementName = "Neck")]
 	public class Neck {
 		[XmlAttribute(AttributeName = "mult")]
-		public decimal Mult { get; set; }
+		public double Mult { get; set; }
 	}
 
 	[Serializable()]
 	[XmlRoot(ElementName = "Arms")]
 	public class Arms {
 		[XmlAttribute(AttributeName = "mult")]
-		public decimal Mult { get; set; }
+		public double Mult { get; set; }
 	}
 
 	[Serializable()]
 	[XmlRoot(ElementName = "Shoulders")]
 	public class Shoulders {
 		[XmlAttribute(AttributeName = "mult")]
-		public decimal Mult { get; set; }
+		public double Mult { get; set; }
 	}
 
 	[Serializable()]
 	[XmlRoot(ElementName = "Legs")]
 	public class Legs {
 		[XmlAttribute(AttributeName = "mult")]
-		public decimal Mult { get; set; }
+		public double Mult { get; set; }
 	}
 }

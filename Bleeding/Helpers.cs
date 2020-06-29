@@ -57,7 +57,7 @@ namespace Bleeding {
 		/// <param name="collisionData"></param>
 		/// <param name="config"></param>
 		/// <returns></returns>
-		public static decimal ApplyMultipliers(this decimal tickDamage, Blow b, AttackCollisionData collisionData, Config config) {
+		public static double ApplyMultipliers(this double tickDamage, Blow b, AttackCollisionData collisionData, Config config) {
 			if (b.DamageType == DamageTypes.Cut)
 				tickDamage *= 1 + config.CutMultiplier;
 			if (b.DamageType == DamageTypes.Blunt)
