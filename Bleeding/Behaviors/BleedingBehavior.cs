@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Windows.Forms;
 using TaleWorlds.Core;
 using TaleWorlds.Engine;
 using TaleWorlds.Engine.GauntletUI;
@@ -10,14 +11,14 @@ using static Bleeding.Helpers;
 
 namespace Bleeding {
 	internal partial class BleedingBehavior : MissionBehaviour {
-		private readonly Config config;
-		private readonly Mission mission;
+		private readonly Config _config;
+		private readonly Mission _mission;
 
 		private SPKillFeedVM _hitFeed;
 
 		public BleedingBehavior(Config config, Mission mission) {
-			this.config = config;
-			this.mission = mission;		
+			_config = config;
+			_mission = mission;		
 		}
 
 		public override MissionBehaviourType BehaviourType => MissionBehaviourType.Other;
@@ -32,6 +33,7 @@ namespace Bleeding {
 			 *	So we iterate over all layers on the screen. Also one of the layers is SceneLayer,
 			 *	not ScreenLayer, which you can not cast to a GauntletLayer.
 			 *	Now I recall a retired developer/closed beta player also having a meltdown over something similar.
+			 *	Hours later: I realized I just need something that derives from MissionView. My frustration discovered a workaround. 
 			*/
 			var killFeedHandler = Mission.Current.GetMissionBehaviour<MissionGauntletKillNotificationSingleplayerUIHandler>();
 			foreach (var screenLayer in killFeedHandler.MissionScreen.Layers) {
@@ -56,16 +58,16 @@ namespace Bleeding {
 			if (attacker == null) return;
 			if (victim.IsMount || attacker.IsMount) return;
 			// don't apply bleeding when player is in conversation
-			if (mission.Mode == MissionMode.Conversation) return; 
-			if (config.DisabledForPlayer && victim == Agent.Main) return;
+			if (_mission.Mode == MissionMode.Conversation) return; 
+			if (_config.DisabledForPlayer && victim == Agent.Main) return;
 			if (collisionData.AttackBlockedWithShield) return;
-			if (b.InflictedDamage < config.MinimumDamage) return;
+			if (b.InflictedDamage < _config.MinimumDamage) return;
 
 			try {
-				double tickDamage = (int)(b.InflictedDamage * config.PercentageBled);
+				double tickDamage = (int)(b.InflictedDamage * _config.PercentageBled);
 
-				tickDamage = tickDamage.ApplyMultipliers(b, collisionData, config);
-				if (config.ReducedForNPCs.Enabled && victim != null && victim.Character != null && !victim.IsHero) tickDamage *= config.ReducedForNPCs.Value;
+				tickDamage = tickDamage.ApplyMultipliers(b, collisionData, _config);
+				if (_config.ReducedForNPCs.Enabled && victim != null && victim.Character != null && !victim.IsHero) tickDamage *= _config.ReducedForNPCs.Value;
 
 				var bleeding = victim.GetComponent<BleedingComponent>();
 
@@ -75,11 +77,24 @@ namespace Bleeding {
 						if (victim == Agent.Main) SayDarkRed("{=bleeding_worsened}Your bleeding got worse!");
 					} else {
 						if (victim == Agent.Main && bleeding == null) SayDarkRed("{=bleeding_started}You started bleeding.");
-						victim.AddComponent(new BleedingComponent(victim, attacker, tickDamage, b, config, mission, _hitFeed));
+						victim.AddComponent(new BleedingComponent(victim, attacker, tickDamage, b, _config, _mission, _hitFeed));
 					}
 				}
 
-			} catch (Exception ex) { if (config.Debug) Say(ex.Message + "\n" + ex.StackTrace); }
+			} catch (Exception ex) { if (_config.Debug) Say(ex.Message + "\n" + ex.StackTrace); }
+		}
+
+		public override void OnClearScene() {
+			var agentList = _mission.Agents
+									.Where(x => x != null)
+									.Where(x => x.IsHuman);
+
+			foreach (var agent in agentList) {
+				var bleeding = agent.GetComponent<BleedingComponent>();
+				if (bleeding != null) {
+					agent.RemoveComponent(bleeding);
+				}
+			}
 		}
 	}
 }

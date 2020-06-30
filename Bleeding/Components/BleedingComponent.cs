@@ -1,5 +1,6 @@
 ﻿using SandBox.View.Menu;
 using System;
+using System.Linq;
 using System.Runtime.ExceptionServices;
 using System.Security;
 using System.Threading.Tasks;
@@ -40,8 +41,9 @@ namespace Bleeding {
 			}
 
 			private async Task DealBleedingDamage() {
+				if (_mission == null) return;
+				double ticks = 0.8;
 				try {
-					double ticks = 0.8;
 					var victimEnemyOnInit = _victim.IsEnemyOf(_attacker);
 
 					// slow the agent for the duration of bleeding
@@ -49,12 +51,21 @@ namespace Bleeding {
 						_victim.SetMaximumSpeedLimit(_config.SlowOnBleed.Value, true);					
 					}
 
-					while (true) {
-						await Task.Delay(_config.SecondsBetweenTicks * 1000);
+					var timeGate = MBCommon.GetTime(MBCommon.TimeType.Mission) + _config.SecondsBetweenTicks;
+					while (_victim.Mission != null) {
+
+						if (timeGate > MBCommon.GetTime(MBCommon.TimeType.Mission)) {
+							await Task.Delay(500);
+							continue;
+						}
+
+						timeGate = MBCommon.GetTime(MBCommon.TimeType.Mission) + _config.SecondsBetweenTicks;
+
 						if (_mission == null) break;
 						if (_mission.Mode == MissionMode.Conversation) break;
 						if (_bandaged) break;
 						if (_tickDamage <= 1) break;
+						if (_mission.Agents?.Where(x => x == _victim)?.FirstOrDefault() == null) break;
 						// don't process further if victim died due to other means
 						if (_victim?.State == AgentState.Killed ||
 							_victim?.State == AgentState.Deleted ||
@@ -72,7 +83,7 @@ namespace Bleeding {
 								var tickB = _b;
 								tickB.InflictedDamage = (int)_tickDamage;
 								tickB.BlowFlag = BlowFlags.NoSound;
-								if (_mission != null) _victim.RegisterBlow(tickB);
+								if (_mission.IsMissionEnding == false) _victim.RegisterBlow(tickB);
 							} else _victim.Health -= (int)_tickDamage;
 						}
 						
@@ -81,7 +92,7 @@ namespace Bleeding {
 							var killB = _b;
 							killB.DamageType = DamageTypes.Blunt;
 							killB.BlowFlag = BlowFlags.NoSound;
-							if (_mission != null) _victim.Die(killB);
+							if (_mission.IsMissionEnding == false) _victim.Die(killB);
 						}
 
 						// display player related bleedings
