@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Linq;
-using System.Windows.Forms;
 using TaleWorlds.Core;
 using TaleWorlds.Engine;
+using System.Windows.Forms;
 using TaleWorlds.Engine.GauntletUI;
+using TaleWorlds.GauntletUI;
 using TaleWorlds.MountAndBlade;
-using TaleWorlds.MountAndBlade.GauntletUI.Mission.Singleplayer;
 using TaleWorlds.MountAndBlade.ViewModelCollection.HUD.KillFeed;
+using TaleWorlds.MountAndBlade.GauntletUI.Mission.Singleplayer;
 using static Bleeding.Helpers;
+using System.Collections.Generic;
 
 namespace Bleeding {
 	internal partial class BleedingBehavior : MissionBehaviour {
@@ -35,24 +37,37 @@ namespace Bleeding {
 			 *	Now I recall a retired developer/closed beta player also having a meltdown over something similar.
 			 *	Hours later: I realized I just need something that derives from MissionView. My frustration discovered a workaround. 
 			*/
+
+			/*
+			 * 01.12.2020:
+			 * Looks like they've moved things around. MissionGauntletGonnaKillMyselfLookingAtThisNameHandler is now in Native
+			 * mod. I've been looking for this too long, man. I started to think they decided to disallow altering default UI.
+			 * 
+			 * It also started to crash and throw NullReferenceException when I call SPKillFeedVM.PersonalFeed.OnPersonalHit().
+			 * Confusing name yet again.
+			*/
+
 			var killFeedHandler = Mission.Current.GetMissionBehaviour<MissionGauntletKillNotificationSingleplayerUIHandler>();
-			foreach (var screenLayer in killFeedHandler.MissionScreen.Layers) {
-				if (screenLayer.Name != "ScreenLayer") {
-					continue;
-				}
-				var gauntletLayer = (GauntletLayer)screenLayer;
-				var queryResult = (SPKillFeedVM)gauntletLayer._moviesAndDatasources?
-															.Where(x => x.Item1.MovieName == "SingleplayerKillfeed")?
-															.FirstOrDefault()?
-															.Item2;
-				if (queryResult != null) {
-					_hitFeed = queryResult;
-					return;
+			if (killFeedHandler != null) {
+				foreach (var screenLayer in killFeedHandler.MissionScreen.Layers) {
+					if (screenLayer.Name != "ScreenLayer") {
+						continue;
+					}
+					var gauntletLayer = (GauntletLayer)screenLayer;
+					var queryResult = (SPKillFeedVM)gauntletLayer._moviesAndDatasources?
+																.Where(x => x.Item1.MovieName == "SingleplayerKillfeed")?
+																.FirstOrDefault()?
+																.Item2;
+					if (queryResult != null) {
+						_hitFeed = queryResult;
+						return;
+					}
 				}
 			}
 		}
 
-		public override void OnRegisterBlow(Agent attacker, Agent victim, GameEntity realHitEntity, Blow b, ref AttackCollisionData collisionData) {
+
+		public override void OnRegisterBlow(Agent attacker, Agent victim, GameEntity realHitEntity, Blow b, ref AttackCollisionData collisionData, in MissionWeapon attackerWeapon) {
 			// filter out unwanted blows
 			if (victim == null) return;
 			if (attacker == null) return;
@@ -84,7 +99,13 @@ namespace Bleeding {
 			} catch (Exception ex) { if (_config.Debug) Say(ex.Message + "\n" + ex.StackTrace); }
 		}
 
+		public override void HandleOnCloseMission() {
+			Say("closing mission!!");
+		}
+
 		public override void OnClearScene() {
+			Say("clearing scene!!");
+
 			var agentList = _mission.Agents
 									.Where(x => x != null)
 									.Where(x => x.IsHuman);

@@ -6,7 +6,7 @@
   <!--	the minimum damage that will cause the agent to bleed
 			setting too low is not recommended
 			default: 25 -->
-  <MinimumDamage>25</MinimumDamage>
+  <MinimumDamage>0</MinimumDamage>
 
   <!--	amount of bleeding damage from previous tick that 
 			carries over to next tick. 
