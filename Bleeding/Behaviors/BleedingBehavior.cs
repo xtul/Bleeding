@@ -2,21 +2,18 @@
 using System.Linq;
 using TaleWorlds.Core;
 using TaleWorlds.Engine;
-using System.Windows.Forms;
 using TaleWorlds.Engine.GauntletUI;
-using TaleWorlds.GauntletUI;
 using TaleWorlds.MountAndBlade;
-using TaleWorlds.MountAndBlade.ViewModelCollection.HUD.KillFeed;
 using TaleWorlds.MountAndBlade.GauntletUI.Mission.Singleplayer;
+using TaleWorlds.MountAndBlade.ViewModelCollection.HUD.KillFeed;
 using static Bleeding.Helpers;
-using System.Collections.Generic;
 
 namespace Bleeding {
 	internal partial class BleedingBehavior : MissionBehaviour {
 		private readonly Config _config;
 		private readonly Mission _mission;
 
-		private SPKillFeedVM _hitFeed;
+		// private SPKillFeedVM _hitFeed;
 
 		public BleedingBehavior(Config config, Mission mission) {
 			_config = config;
@@ -44,26 +41,26 @@ namespace Bleeding {
 			 * mod. I've been looking for this too long, man. I started to think they decided to disallow altering default UI.
 			 * 
 			 * It also started to crash and throw NullReferenceException when I call SPKillFeedVM.PersonalFeed.OnPersonalHit().
-			 * Confusing name yet again.
+			 * Confusing name yet again. Disabled for now...
 			*/
 
-			var killFeedHandler = Mission.Current.GetMissionBehaviour<MissionGauntletKillNotificationSingleplayerUIHandler>();
-			if (killFeedHandler != null) {
-				foreach (var screenLayer in killFeedHandler.MissionScreen.Layers) {
-					if (screenLayer.Name != "ScreenLayer") {
-						continue;
-					}
-					var gauntletLayer = (GauntletLayer)screenLayer;
-					var queryResult = (SPKillFeedVM)gauntletLayer._moviesAndDatasources?
-																.Where(x => x.Item1.MovieName == "SingleplayerKillfeed")?
-																.FirstOrDefault()?
-																.Item2;
-					if (queryResult != null) {
-						_hitFeed = queryResult;
-						return;
-					}
-				}
-			}
+			// var killFeedHandler = Mission.Current.GetMissionBehaviour<MissionGauntletKillNotificationSingleplayerUIHandler>();
+			// if (killFeedHandler != null) {
+			// 	foreach (var screenLayer in killFeedHandler.MissionScreen.Layers) {
+			// 		if (screenLayer.Name != "ScreenLayer") {
+			// 			continue;
+			// 		}
+			// 		var gauntletLayer = (GauntletLayer)screenLayer;
+			// 		var queryResult = (SPKillFeedVM)gauntletLayer._moviesAndDatasources?
+			// 													.Where(x => x.Item1.MovieName == "SingleplayerKillfeed")?
+			// 													.FirstOrDefault()?
+			// 													.Item2;
+			// 		if (queryResult != null) {
+			// 			_hitFeed = queryResult;
+			// 			return;
+			// 		}
+			// 	}
+			// }
 		}
 
 
@@ -88,34 +85,16 @@ namespace Bleeding {
 
 				if (tickDamage != 0) {
 					if (bleeding != null) {
-						bleeding._tickDamage += (int)Math.Round(tickDamage * 0.35);
 						if (victim == Agent.Main) SayDarkRed("{=bleeding_worsened}Your bleeding got worse!");
+						bleeding._tickDamage += (int)Math.Round(tickDamage * 0.35);
 					} else {
-						if (victim == Agent.Main && bleeding == null) SayDarkRed("{=bleeding_started}You started bleeding.");
-						victim.AddComponent(new BleedingComponent(victim, attacker, tickDamage, b, _config, _mission, _hitFeed));
+						if (victim == Agent.Main) SayDarkRed("{=bleeding_started}You started bleeding.");
+						victim.AddComponent(new BleedingComponent(victim, attacker, tickDamage, b, _config, _mission, null));
+
 					}
 				}
 
 			} catch (Exception ex) { if (_config.Debug) Say(ex.Message + "\n" + ex.StackTrace); }
-		}
-
-		public override void HandleOnCloseMission() {
-			Say("closing mission!!");
-		}
-
-		public override void OnClearScene() {
-			Say("clearing scene!!");
-
-			var agentList = _mission.Agents
-									.Where(x => x != null)
-									.Where(x => x.IsHuman);
-
-			foreach (var agent in agentList) {
-				var bleeding = agent.GetComponent<BleedingComponent>();
-				if (bleeding != null) {
-					agent.RemoveComponent(bleeding);
-				}
-			}
-		}
+		}		
 	}
 }

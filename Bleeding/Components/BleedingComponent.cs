@@ -122,7 +122,7 @@ namespace Bleeding {
 						var tickBlow = _b;
 						tickBlow.InflictedDamage = (int)_tickDamage;
 						tickBlow.BlowFlag = BlowFlags.NoSound;
-						if (_enabled && _mission.IsMissionEnding == false) _victim.RegisterBlow(tickBlow);
+						if (_enabled && _mission != null) _victim.RegisterBlow(tickBlow);
 					} else _victim.Health -= (int)_tickDamage;
 				}
 
@@ -131,7 +131,7 @@ namespace Bleeding {
 					var killBlow = _b;
 					killBlow.DamageType = DamageTypes.Blunt;
 					killBlow.BlowFlag = BlowFlags.NoSound;
-					_victim.Die(killBlow);
+					if (_enabled && _mission != null) _victim.Die(killBlow);
 				}
 
 				// display player related bleeding ticks
@@ -141,7 +141,7 @@ namespace Bleeding {
 					if (_attacker == Agent.Main && _hitFeed != null)
 						// the try-catching is painful. Game crashes when adding bleeding damage to thie feed.
 						try {
-							_hitFeed.PersonalFeed.OnPersonalHit((int)Math.Ceiling(_tickDamage), _victim.Health <= 0, false, false, _victim.Name);
+							_hitFeed.PersonalFeed.OnPersonalHit((int)Math.Ceiling(_tickDamage), _victim.Health <= 0, false, false, $"{_victim.Name} 💧");
 						} catch { }
 				}
 			}
@@ -149,10 +149,11 @@ namespace Bleeding {
 			private void UnregisterBleeding() {
 				_timer.Elapsed -= BleedingTick;
 				_timer.Stop();
+				_enabled = false;
 				_victim.RemoveComponent(this);
 			}
 
-			protected override void OnAgentRemoved() => _enabled = false;
+			// protected override void OnAgentRemoved() => _enabled = false;
 		}
 	}
 }
